@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { FILE_PATH, HTML_TEMPLATE } from '../../const/common'
 import resizeImage from '../../utilities/resize-image'
 
 const imageRoutes = Router()
@@ -21,26 +22,11 @@ imageRoutes.get('/', async (req, res, next) => {
     'assets/thump/'
   )
     .then((outputFile) => {
-      if (outputFile.error) {
+      if (outputFile.error || !outputFile.success) {
         return res.sendStatus(500)
       }
 
-      res.send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Document</title>
-      </head>
-      <body>
-          <div>
-            <img src="/thump/${outputFile.success}" alt="${fileName}" style="margin: auto"/>
-          </div>
-      </body>
-      </html>
-    `)
+      res.send(HTML_TEMPLATE.replace(FILE_PATH, outputFile.success))
     })
     .catch((error) => next(error))
 })

@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import caching from '../middlewares/caching'
 import log from '../middlewares/log'
 import imageRoutes from './image'
 
@@ -8,6 +9,6 @@ routes.get('/', log, (_, res) => {
   res.send(' Root Route')
 })
 
-routes.use('/image', imageRoutes)
+routes.use('/image', [caching], imageRoutes)
 
 export default routes
