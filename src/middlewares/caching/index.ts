@@ -9,8 +9,6 @@ export default async (
 ): Promise<void> => {
   const { fileName, width, height } = req.query
 
-  console.log({ fileName, width, height })
-
   if (fileName && typeof fileName === 'string') {
     const imageGen = `${fileName.split('.')[0]}_${width}x${height || width}.${
       fileName.split('.')[1]
@@ -23,8 +21,6 @@ export default async (
 
       return
     }
-
-    console.log(file)
   }
 
   next()

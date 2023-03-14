@@ -26,7 +26,6 @@ export default async function resizeImage(
       success: outputFile
     }
   } catch (error) {
-    console.log({ error })
     return { error: error as string }
   }
 }
