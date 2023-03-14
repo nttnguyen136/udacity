@@ -23,10 +23,10 @@ $  npm run test
 
 ## Dependencies
 
-1. Express: Web application framework 
-2. Jasmine: JavaScript testing framework 3. for browsers and Node
-4. Sharp: resize an image
-5. Supertest: A driven library for testing HTTP servers
+1. [Express](https://www.npmjs.com/package/express): Web application framework 
+2. [Jasmine](https://www.npmjs.com/package/jasmine): JavaScript testing framework 3. for browsers and Node
+4. [Sharp](https://www.npmjs.com/package/sharp): resize an image
+5. [Supertest](https://www.npmjs.com/package/supertest): A driven library for testing HTTP servers
 
 ## Run 
 
