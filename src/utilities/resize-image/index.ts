@@ -9,23 +9,18 @@ export default async function resizeImage(
     width?: number
     height?: number
   },
-  outputPath = 'assets/thump/'
-): Promise<{ success?: string; error?: string }> {
+  outputPath = 'assets/thump'
+): Promise<string> {
   // default height same width
   const outputFile = `${fileName.split('.')[0]}_${width}x${height || width}.${
     fileName.split('.')[1]
   }`
 
-  try {
-    await sharp(`assets/${fileName}`)
-      .resize(width, height || width)
-      .jpeg({ mozjpeg: true })
-      .toFile(`${outputPath}/${outputFile}`)
-
-    return {
-      success: outputFile
-    }
-  } catch (error) {
-    return { error: error as string }
-  }
+  return sharp(`assets/${fileName}`)
+    .resize(width, height || width)
+    .jpeg({ mozjpeg: true })
+    .toFile(`${outputPath}/${outputFile}`)
+    .then(() => {
+      return outputFile
+    })
 }

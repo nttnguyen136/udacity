@@ -1,5 +1,10 @@
 import { Router } from 'express'
-import { FILE_PATH, HTML_TEMPLATE } from '../../const/common'
+import {
+  ERROR_MESSAGE,
+  FILE_PATH,
+  HTML_ERROR_TEMPLATE,
+  HTML_TEMPLATE
+} from '../../const/common'
 import resizeImage from '../../utilities/resize-image'
 
 const imageRoutes = Router()
@@ -9,26 +14,26 @@ imageRoutes.get('/', async (req, res, next) => {
   const { fileName, width, height } = req.query
 
   if (!fileName) {
-    res.sendStatus(404)
-    return
+    res.status(500).send(HTML_ERROR_TEMPLATE.replace(ERROR_MESSAGE, 'Error'))
+  } else {
+    resizeImage(
+      fileName.toString(),
+      {
+        width: Number(width || 200), // default width is 200px
+        height: Number(height)
+      },
+      'assets/thump/'
+    )
+      .then((outputFile) => {
+        res.send(HTML_TEMPLATE.replace(FILE_PATH, outputFile))
+      })
+      .catch((error) => {
+        console.log(error)
+
+        res.status(500).send(HTML_ERROR_TEMPLATE.replace(ERROR_MESSAGE, error))
+        // next(error)
+      })
   }
-
-  return resizeImage(
-    fileName.toString(),
-    {
-      width: Number(width || 200), // default width is 200px
-      height: Number(height)
-    },
-    'assets/thump/'
-  )
-    .then((outputFile) => {
-      if (outputFile.error || !outputFile.success) {
-        return res.sendStatus(500)
-      }
-
-      res.send(HTML_TEMPLATE.replace(FILE_PATH, outputFile.success))
-    })
-    .catch((error) => next(error))
 })
 
 export default imageRoutes
